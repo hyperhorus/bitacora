@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora de Obra - Notas</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .nota-form, .notas-guardadas {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea,
+        input[type="date"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .nota-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+        }
+        .nota-item strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Notas de la Bitácora de Obra</h1>
+
+    <div class="nota-form">
+        <h2>Crear Nueva Nota</h2>
+        <label for="id_obra_nota">ID Obra:</label>
+        <input type="text" id="id_obra_nota" name="id_obra_nota" value="" readonly>
+
+        <label for="fecha_nota">Fecha:</label>
+        <input type="date" id="fecha_nota" name="fecha_nota" required>
+
+        <label for="folio_nota">Folio:</label>
+        <input type="text" id="folio_nota" name="folio_nota" required>
+
+        <label for="texto_nota">Nota:</label>
+        <textarea id="texto_nota" name="texto_nota" rows="5" required></textarea>
+
+        <label for="elaborado_por">Elaborado por:</label>
+        <input type="text" id="elaborado_por" name="elaborado_por" required>
+
+        <label for="recibido_por">Recibido por:</label>
+        <input type="text" id="recibido_por" name="recibido_por">
+
+        <button onclick="guardarNota()">Guardar Nota</button>
+    </div>
+
+    <div class="notas-guardadas">
+        <h2>Notas Guardadas</h2>
+        <div id="lista_notas">
+            </div>
+    </div>
+
+    <script>
+        // Obtener el ID de la obra de la página principal (simulado)
+        const idObra = localStorage.getItem('id_obra_seleccionada');
+        document.getElementById('id_obra_nota').value = idObra || 'N/A';
+
+        let notas = localStorage.getItem('notas_' + idObra);
+        notas = notas ? JSON.parse(notas) : [];
+
+        function guardarNota() {
+            const fecha = document.getElementById('fecha_nota').value;
+            const folio = document.getElementById('folio_nota').value;
+            const texto = document.getElementById('texto_nota').value;
+            const elaboradoPor = document.getElementById('elaborado_por').value;
+            const recibidoPor = document.getElementById('recibido_por').value;
+
+            const nuevaNota = {
+                fecha: fecha,
+                folio: folio,
+                texto: texto,
+                elaboradoPor: elaboradoPor,
+                recibidoPor: recibidoPor
+            };
+
+            notas.push(nuevaNota);
+            localStorage.setItem('notas_' + idObra, JSON.stringify(notas));
+            mostrarNotas();
+            limpiarFormulario();
+            alert('Nota guardada correctamente.');
+        }
+
+        function mostrarNotas() {
+            const listaNotasDiv = document.getElementById('lista_notas');
+            listaNotasDiv.innerHTML = '';
+
+            if (notas.length === 0) {
+                listaNotasDiv.innerHTML = '<p>No hay notas guardadas para esta obra.</p>';
+                return;
+            }
+
+            notas.forEach(nota => {
+                const notaDiv = document.createElement('div');
+                notaDiv.classList.add('nota-item');
+                notaDiv.innerHTML = `
+                    <strong>Fecha:</strong> ${nota.fecha}<br>
+                    <strong>Folio:</strong> ${nota.folio}<br>
+                    <strong>Nota:</strong> ${nota.texto}<br>
+                    <strong>Elaborado por:</strong> ${nota.elaboradoPor}<br>
+                    <strong>Recibido por:</strong> ${nota.recibidoPor || 'N/A'}<br>
+                `;
+                listaNotasDiv.appendChild(notaDiv);
+            });
+        }
+
+        function limpiarFormulario() {
+            document.getElementById('fecha_nota').value = '';
+            document.getElementById('folio_nota').value = '';
+            document.getElementById('texto_nota').value = '';
+            document.getElementById('elaborado_por').value = '';
+            document.getElementById('recibido_por').value = '';
+        }
+
+        // Mostrar las notas al cargar la página
+        mostrarNotas();
+    </script>
+</body>
+</html>

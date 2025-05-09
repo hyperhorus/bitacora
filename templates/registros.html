@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registros</title>
+</head>
+<body>
+    <h1>Registros de Bitácora</h1>
+    <a href="/">← Volver</a><br><br>
+    {% for r in registros %}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+        <strong>clave_obra:</strong> {{ r.clave_obra }}<br>
+        <strong>nombre_obra:</strong> {{ r.nombre_obra }}<br>
+        <strong>direccion_predio:</strong> {{ r.direccion_predio }}<br>
+        <strong>tipo_obra:</strong> {{ r.tipo_obra }}<br>
+        <strong>numero_licencia:</strong> {{ r.numero_licencia }}%<br>
+        <strong>datos_propietario:</strong> {{ r.datos_propietario }}<br>
+        <strong>datos_dro:</strong> {{ r.datos_dro }}<br>
+        <strong>fecha_inicio:</strong> {{ r.fecha_inicio }}<br>
+        <strong>fecha_fin:</strong> {{ r.fecha_fin }}<br>
+        <strong>numero_contrato:</strong> {{ r.numero_contrato }}<br>
+        <strong>fecha_envio:</strong> {{ r.fecha_envio }}<br>
+    </div>
+    {% endfor %}
+</body>
+</html>

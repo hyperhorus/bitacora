@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Bitácora</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        .accordion {
+            background-color: #222;
+            color: #fff;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1em;
+            transition: 0.4s;
+            margin-bottom: 1px;
+        }
+
+        .active, .accordion:hover {
+            background-color: #444;
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: #333;
+            color: #eee;
+            display: none;
+            overflow: hidden;
+        }
+
+        .panel.show {
+            display: block;
+        }
+
+        .campo {
+            padding: 10px 0;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .campo input[type="text"],
+        .campo input[type="date"],
+        .campo select {
+            width: calc(50% - 22px); /* Ajuste para el padding */
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #555;
+            background-color: #444;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+    .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2px 20px;
+    max-width: 1000px;
+    margin-bottom: 5px;
+    font-weight: 200;
+    font-size: 13px
+  }
+
+        .checkbox-grid label {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        button[type="submit"] {
+            background-color: #555;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #777;
+        }
+
+        h2 {
+            color: #ddd;
+            margin-top: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario de Bitácora</h1>
+    <form method="POST" action="/guardar">
+
+        <button type="button" class="accordion">Información de la Obra</button>
+        <div class="panel">
+            <div class="campo">
+                <label for="id_obra">ID Obras:</label>
+                <input type="text" id="id_obra" name="id_obra" size="20">
+            </div>
+            <div class="campo">
+                <label for="nombre_obra">Nombre de la obra o proyecto:</label>
+                <input type="text" id="nombre_obra" name="nombre_obra">
+            </div>
+            <div class="campo">
+                <label for="direccion">Dirección del predio:</label>
+                <input type="text" id="direccion" name="direccion">
+            </div>
+            <label for="tramites">Tipo de tramite o modalidad:</label><br><br>
+            <div class="checkbox-grid">
+                {% for id, texto in data.tipos_tramite %}
+                    <label><input type="checkbox" id="tramites" name="tramites" value="{{ id }}"> {{ texto }}</label>
+                {% endfor %}
+            </div>
+            <div class="campo">
+                <label for="tipo_uso">Tipo de uso de predio:</label>
+                <select id="tipo_uso" name="tipo_uso" onchange="mostrarDictamen()">
+                    <option value="">Seleccionar</option>
+                    <option value="Habitacional">Habitacional</option>
+                    <option value="Comercial">Comercial y/o servicios</option>
+                    <option value="Industrial">Industrial</option>
+                </select>
+            </div>
+            <div class="campo sub-campo" id="dictamen_comercial" style="display: none;">
+                <label for="dictamen_comercial_texto">Dictamen de uso de suelo (Comercial y/o servicios):</label>
+                <input type="text" id="dictamen_comercial_texto" name="dictamen_comercial_texto">
+            </div>
+            <div class="campo sub-campo" id="dictamen_industrial" style="display: none;">
+                <label for="dictamen_industrial_texto">Dictamen de uso de suelo (Industrial):</label>
+                <input type="text" id="dictamen_industrial_texto" name="dictamen_industrial_texto">
+            </div>
+            <div class="campo">
+                <label for="licencia">Número de licencia o permiso de construcción:</label>
+                <input type="text" id="licencia" name="licencia">
+            </div>
+            <div class="campo">
+                <label for="clave_catastral">Clave catastral:</label>
+                <input type="text" id="clave_catastral" name="clave_catastral">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Datos del Propietario</button>
+        <div class="panel">
+
+            <div class="campo">
+                <label for="propietario_nombre">Nombre o razón social:</label>
+                <input type="text" id="propietario_nombre" name="propietario_nombre">
+            </div>
+            <div class="campo">
+                <label for="propietario_direccion">Dirección fiscal:</label>
+                <input type="text" id="propietario_direccion" name="propietario_direccion">
+            </div>
+            <div class="campo">
+                <label for="propietario_rfc">RFC:</label>
+                <input type="text" id="propietario_rfc" name="propietario_rfc">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Director Responsable de Obra (DRO)</button>
+        <div class="panel">
+
+            <div class="campo">
+                <label for="dro_nombre">Nombre completo:</label>
+                <input type="text" id="dro_nombre" name="dro_nombre">
+            </div>
+            <div class="campo">
+                <label for="dro_cedula">Cédula profesional:</label>
+                <input type="text" id="dro_cedula" name="dro_cedula">
+            </div>
+            <div class="campo">
+                <label for="dro_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="dro_colegio" name="dro_colegio">
+            </div>
+            <div class="campo">
+                <label for="dro_registro_colegio">Registro Colegio:</label>
+                <input type="text" id="dro_registro_colegio" name="dro_registro_colegio">
+            </div>
+            <div class="campo">
+                <label for="dro_registro_municipal">Registro municipal:</label>
+                <input type="text" id="dro_registro_municipal" name="dro_registro_municipal">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Corresponsable de estructuras</button>
+        <div class="panel">
+
+            <div class="campo">
+                <label for="estructura_nombre">Nombre completo:</label>
+                <input type="text" id="estructura_nombre" name="estructura_nombre">
+            </div>
+            <div class="campo">
+                <label for="estructura_cedula">Cédula profesional:</label>
+                <input type="text" id="estructura_cedula" name="estructura_cedula">
+            </div>
+            <div class="campo">
+                <label for="estructura_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="estructura_colegio" name="estructura_colegio">
+            </div>
+            <div class="campo">
+                <label for="estructura_registro_colegio">Registro Colegio:</label>
+                <input type="text" id="estructura_registro_colegio" name="estructura_registro_colegio">
+            </div>
+            <div class="campo">
+                <label for="estructura_registro_municipal">Registro municipal:</label>
+                <input type="text" id="estructura_registro_municipal" name="estructura_registro_municipal">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Corresponsable de instalaciones</button>
+        <div class="panel">
+
+            <div class="campo">
+                <label for="instalaciones_nombre">Nombre completo:</label>
+                <input type="text" id="instalaciones_nombre" name="instalaciones_nombre">
+            </div>
+            <div class="campo">
+                <label for="instalaciones_cedula">Cédula profesional:</label>
+                <input type="text" id="instalaciones_cedula" name="instalaciones_cedula">
+            </div>
+            <div class="campo">
+                <label for="instalaciones_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="instalaciones_colegio" name="instalaciones_colegio">
+            </div>
+            <div class="campo">
+                <label for="instalaciones_registro_colegio">Registro Colegio:</label>
+                <input type="text" id="instalaciones_registro_colegio" name="instalaciones_registro_colegio">
+            </div>
+            <div class="campo">
+                <label for="instalaciones_registro_municipal">Registro municipal:</label>
+                <input type="text" id="instalaciones_registro_municipal" name="instalaciones_registro_municipal">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Corresponsable de diseño urbano y arq.</button>
+        <div class="panel">
+
+            <div class="campo">
+                <label for="diseno_nombre">Nombre completo:</label>
+                <input type="text" id="diseno_nombre" name="diseno_nombre">
+            </div>
+            <div class="campo">
+                <label for="diseno_cedula">Cédula profesional:</label>
+                <input type="text" id="diseno_cedula" name="diseno_cedula">
+            </div>
+            <div class="campo">
+                <label for="diseno_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="diseno_colegio" name="diseno_colegio">
+            </div>
+            <div class="campo">
+                <label for="diseno_registro_colegio">Registro Colegio:</label>
+                <input type="text" id="diseno_registro_colegio" name="diseno_registro_colegio">
+            </div>
+            <div class="campo">
+                <label for="diseno_registro_municipal">Registro municipal:</label>
+                <input type="text" id="diseno_registro_municipal" name="diseno_registro_municipal">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Corresponsable de gas</button>
+        <div class="panel">
+
+            <div class="campo">
+                <label for="gas_nombre">Nombre completo:</label>
+                <input type="text" id="gas_nombre" name="gas_nombre">
+            </div>
+            <div class="campo">
+                <label for="gas_cedula">Cédula profesional:</label>
+                <input type="text" id="gas_cedula" name="gas_cedula">
+            </div>
+            <div class="campo">
+                <label for="gas_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="gas_colegio" name="gas_colegio">
+            </div>
+            <div class="campo">
+                <label for="gas_registro_colegio">Registro Colegio:</label>
+                <input type="text" id="gas_registro_colegio" name="gas_registro_colegio">
+            </div>
+            <div class="campo">
+                <label for="gas_registro_municipal">Registro municipal:</label>
+                <input type="text" id="gas_registro_municipal" name="gas_registro_municipal">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Fechas y Contrato</button>
+        <div class="panel">
+            <div class="campo">
+                <label for="fecha_inicio">Fecha de inicio:</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio">
+            </div>
+            <div class="campo">
+                <label for="fecha_termino">Fecha de término:</label>
+                <input type="date" id="fecha_termino" name="fecha_termino">
+            </div>
+            <div class="campo">
+                <label for="numero_contrato">Número de contrato:</label>
+                <input type="text" id="numero_contrato" name="numero_contrato">
+            </div>
+        </div>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                panel.classList.toggle("show");
+            });
+        }
+
+        function mostrarDictamen() {
+            const tipoUso = document.getElementById("tipo_uso").value;
+            const dictamenComercial = document.getElementById("dictamen_comercial");
+            const dictamenIndustrial = document.getElementById("dictamen_industrial");
+
+            dictamenComercial.style.display = "none";
+            dictamenIndustrial.style.display = "none";
+
+            if (tipoUso === "Comercial") {
+                dictamenComercial.style.display = "block";
+            } else if (tipoUso === "Industrial") {
+                dictamenIndustrial.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

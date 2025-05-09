@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bitácora de Obra</title>
+</head>
+<body>
+    <h1>Registro Diario</h1>
+    <form action="/guardar" method="post">
+        Fecha: <input type="date" name="fecha"><br><br>
+        Clima: <input type="text" name="clima"><br><br>
+        Actividades: <textarea name="actividades"></textarea><br><br>
+        Avance (%): <input type="number" name="avance"><br><br>
+        Observaciones: <textarea name="observaciones"></textarea><br><br>
+        <button type="submit">Guardar Registro</button>
+    </form>
+    <br><a href="/registros">Ver registros</a>
+</body>
+</html>

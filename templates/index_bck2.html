@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bitácora de Obra</title>
+    <link rel="stylesheet" href="static/layout.css">
+
+</head>
+<body>
+    <h1>Registro Diario</h1>
+    <form action="/guardar" method="post">
+         <label for="nombre_obra">Nombre de la obra o proyecto:</label>
+        <input type="text" id="nombre_obra" name="nombre_obra" required>
+
+        <label for="direccion_predio">Dirección exacta del predio:</label>
+        <input type="text" id="direccion_predio" name="direccion_predio" required>
+
+        <label for="tipo_obra">Tipo de obra:</label>
+        <select name="tipo_obra" id="tipo_obra" required onchange="mostrarCampoAdicional()">
+          <option value="">-- Selecciona una opción --</option>
+          <option value="residencial">Residencial</option>
+          <option value="comercial">Comercial</option>
+          <option value="remodelacion">Remodelación</option>
+        </select><br><br>
+
+        <div id="campo_remodelacion" style="display: none; margin-top: 1rem;">
+          <label for="descripcion_cambios">Descripción de los cambios (remodelación):</label>
+          <textarea id="descripcion_cambios" name="descripcion_cambios" rows="3"></textarea>
+        </div>
+
+        <script>
+        function mostrarCampoAdicional() {
+          const tipoObra = document.getElementById("tipo_obra").value;
+          const campoRemodelacion = document.getElementById("campo_remodelacion");
+          const descripcion = document.getElementById("descripcion_cambios");
+
+          if (tipoObra === "remodelacion") {
+            campoRemodelacion.style.display = "block";
+            descripcion.setAttribute("required", "required");
+          } else {
+            campoRemodelacion.style.display = "none";
+            descripcion.removeAttribute("required");
+            descripcion.value = ""; // Limpia si cambian de idea
+          }
+        }</script>
+
+        <label for="numero_licencia">Número de licencia o permiso de construcción:</label>
+        <input type="text" id="numero_licencia" name="numero_licencia">
+
+        <label for="datos_propietario">Nombre y datos del propietario:</label>
+        <textarea id="datos_propietario" name="datos_propietario" rows="3"></textarea>
+
+        <label for="datos_dro">Nombre y datos del Director Responsable de Obra (DRO):</label>
+        <textarea id="datos_dro" name="datos_dro" rows="3"></textarea>
+
+        <label for="fechas">Fecha de inicio y estimada de término:</label>
+        <input type="text" id="fechas" name="fechas">
+
+        <label for="numero_contrato">Número de contrato (si aplica):</label>
+        <input type="text" id="numero_contrato" name="numero_contrato">
+
+        <button type="submit">Guardar Registro</button>
+    </form>
+    <br><a href="/registros">Ver registros</a>
+</body>
+</html>

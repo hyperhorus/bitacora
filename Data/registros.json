@@ -1,0 +1,89 @@
+[
+    {
+        "fecha": "2025-04-01",
+        "clima": "dfdfg",
+        "actividades": "gdfgdf fghf",
+        "avance": "7",
+        "observaciones": "ghg hgf hf gh"
+    },
+    {
+        "fecha": "2025-04-02",
+        "clima": "jhjkhj",
+        "actividades": "hjkhjk",
+        "avance": "10",
+        "observaciones": "ljkl"
+    },
+    {
+        "nombre_obra": "Obra 1",
+        "direccion_predio": "sdfsdfsdf",
+        "tipo_obra": "remodelacion",
+        "numero_licencia": "4434tt",
+        "datos_propietario": "ertertev rerter",
+        "datos_dro": "gghy bbtbtbt",
+        "fechas": "10/12/26",
+        "numero_contrato": "ertertert"
+    },
+    {
+        "nombre_obra": "Edificio moderno",
+        "direccion_predio": "Calle de los Huevos de oro 123",
+        "tipo_obra": "Comercial",
+        "numero_licencia": "3234434",
+        "datos_propietario": "MArquez de la Villa del villar del Aguila Perez",
+        "datos_dro": "Ana del Mamen Alatower Ram",
+        "fechas": "12/04/25",
+        "numero_contrato": "eeerr554"
+    },
+    {
+        "nombre_obra": "Obra 2",
+        "direccion": "Calle del pavo 23",
+        "tipo_obra": "residencial",
+        "descripcion_cambios": null,
+        "licencia": "8988 ddfgt",
+        "propietario": "Emmanuel Dannan",
+        "dro": "El pelado",
+        "fecha_inicio": "2025-04-09",
+        "fecha_fin": "2025-07-17",
+        "contrato": "55rfff",
+        "fecha_envio": "2025-04-29T10:40:03.924629"
+    },
+    {
+        "nombre_obra": "Proyecto Pycharm",
+        "direccion_predio": "Cerralvo 123",
+        "tipo_obra": "residencial",
+        "descripcion_cambios": null,
+        "numero_licencia": "Numero 345",
+        "datos_propietario": "Daniel Lacalle",
+        "datos_dro": "Ana del mamen",
+        "fecha_inicio": "2025-04-29",
+        "fecha_fin": "2025-09-10",
+        "numero_contrato": "12 For",
+        "fecha_envio": "2025-04-29T10:55:01.064777"
+    },
+    {
+        "nombre_obra": "Otra prueba",
+        "direccion_predio": "Juan escutia 23",
+        "tipo_obra": "remodelacion",
+        "descripcion_cambios": "Cambios en las ventanas",
+        "numero_licencia": "Permiso segob 234",
+        "datos_propietario": "Antonio Lopez de Santaana",
+        "datos_dro": "Ana Del Carmen de la Torre Borrego",
+        "fecha_inicio": "2025-04-17",
+        "fecha_fin": "2025-10-01",
+        "numero_contrato": "Contrato 234-1925",
+        "fecha_envio": "2025-04-29T10:57:49.382297"
+    },
+    {
+        "clave_obra": "12345",
+        "nombre_obra": "Obra 3",
+        "direccion_predio": "Calle 4 num 23",
+        "tipo_obra": "residencial",
+        "descripcion_cambios": null,
+        "numero_licencia": "23323tgg",
+        "datos_propietario": "Juana perez",
+        "datos_dro": "Ana Banana",
+        "fecha_inicio": "2025-04-23",
+        "fecha_fin": "2025-07-17",
+        "numero_contrato": "3377uu",
+        "fecha_envio": "2025-04-29T15:44:47.504234"
+    }
+]

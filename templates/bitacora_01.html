@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora de Obra - Captura de Información</title>
+    <link rel="stylesheet" href="../static/layout2.css">
+
+</head>
+<body>
+    <h1>Bitácora de Obra</h1>
+
+    <div class="campo">
+        <label for="id_obra">ID Obra:</label>
+        <input type="text" id="id_obra" name="id_obra">
+    </div>
+
+    <div class="campo">
+        <label for="nombre_obra">Nombre de la obra o proyecto:</label>
+        <input type="text" id="nombre_obra" name="nombre_obra">
+    </div>
+
+    <div class="campo">
+        <label for="direccion">Dirección del predio:</label>
+        <input type="text" id="direccion" name="direccion">
+    </div>
+
+    <div class="campo">
+    <label>Tipo de tramite o modalidad:</label>
+    <div class="sub-campo">
+        <input type="checkbox" id="rojo" name="modalidad" value="rojo">
+        <label for="rojo">Rojo</label><br>
+        <input type="checkbox" id="verde" name="modalidad" value="verde">
+        <label for="verde">Verde</label><br>
+        <input type="checkbox" id="azul" name="modalidad" value="azul">
+        <label for="azul">Azul</label><br>
+        <input type="checkbox" id="blanco" name="modalidad" value="blanco">
+        <label for="blanco">Blanco</label><br>
+        <input type="checkbox" id="amarillo" name="modalidad" value="amarillo">
+        <label for="amarillo">Amarillo</label><br>
+        <input type="checkbox" id="azul_2" name="modalidad" value="azul">
+        <label for="azul_2">Azul</label>
+    </div>
+</div>
+
+    <div class="campo">
+        <label for="tipo_uso">Tipo de uso de predio:</label>
+        <select id="tipo_uso" name="tipo_uso" onchange="mostrarDictamen()">
+            <option value="">Seleccionar</option>
+            <option value="Habitacional">Habitacional</option>
+            <option value="Comercial">Comercial y/o servicios</option>
+            <option value="Industrial">Industrial</option>
+        </select>
+    </div>
+
+    <div class="campo sub-campo" id="dictamen_comercial" style="display: none;">
+        <label for="dictamen_comercial_texto">Dictamen de uso de suelo (Comercial y/o servicios):</label>
+        <input type="text" id="dictamen_comercial_texto" name="dictamen_comercial_texto">
+    </div>
+
+    <div class="campo sub-campo" id="dictamen_industrial" style="display: none;">
+        <label for="dictamen_industrial_texto">Dictamen de uso de suelo (Industrial):</label>
+        <input type="text" id="dictamen_industrial_texto" name="dictamen_industrial_texto">
+    </div>
+
+    <div class="campo">
+        <label for="licencia">Número de licencia o permiso de construcción:</label>
+        <input type="text" id="licencia" name="licencia">
+    </div>
+
+    <div class="campo">
+        <label for="clave_catastral">Clave catastral:</label>
+        <input type="text" id="clave_catastral" name="clave_catastral">
+    </div>
+
+    <h2>Nombre y datos del propietario</h2>
+    <div class="campo">
+        <label for="propietario_nombre">Nombre o razón social:</label>
+        <input type="text" id="propietario_nombre" name="propietario_nombre">
+    </div>
+    <div class="campo">
+        <label for="propietario_direccion">Dirección fiscal:</label>
+        <input type="text" id="propietario_direccion" name="propietario_direccion">
+    </div>
+    <div class="campo">
+        <label for="propietario_rfc">RFC:</label>
+        <input type="text" id="propietario_rfc" name="propietario_rfc">
+    </div>
+
+    <h2>Director Responsable de Obra (DRO)</h2>
+    <div class="campo">
+        <label for="dro_nombre">Nombre completo:</label>
+        <input type="text" id="dro_nombre" name="dro_nombre">
+    </div>
+    <div class="campo">
+        <label for="dro_cedula">Cédula profesional:</label>
+        <input type="text" id="dro_cedula" name="dro_cedula">
+    </div>
+    <div class="campo">
+        <label for="dro_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+        <input type="text" id="dro_colegio" name="dro_colegio">
+    </div>
+    <div class="campo">
+        <label for="dro_registro_colegio">Registro Colegio:</label>
+        <input type="text" id="dro_registro_colegio" name="dro_registro_colegio">
+    </div>
+    <div class="campo">
+        <label for="dro_registro_municipal">Registro municipal:</label>
+        <input type="text" id="dro_registro_municipal" name="dro_registro_municipal">
+    </div>
+
+    <h2 class="datos-corresponsable">Corresponsable de estructuras</h2>
+    <div class="campo">
+        <label for="estructura_nombre">Nombre completo:</label>
+        <input type="text" id="estructura_nombre" name="estructura_nombre">
+    </div>
+    <div class="campo">
+        <label for="estructura_cedula">Cédula profesional:</label>
+        <input type="text" id="estructura_cedula" name="estructura_cedula">
+    </div>
+    <div class="campo">
+        <label for="estructura_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+        <input type="text" id="estructura_colegio" name="estructura_colegio">
+    </div>
+    <div class="campo">
+        <label for="estructura_registro_colegio">Registro Colegio:</label>
+        <input type="text" id="estructura_registro_colegio" name="estructura_registro_colegio">
+    </div>
+    <div class="campo">
+        <label for="estructura_registro_municipal">Registro municipal:</label>
+        <input type="text" id="estructura_registro_municipal" name="estructura_registro_municipal">
+    </div>
+
+    <h2 class="datos-corresponsable">Corresponsable de instalaciones</h2>
+    <div class="campo">
+        <label for="instalaciones_nombre">Nombre completo:</label>
+        <input type="text" id="instalaciones_nombre" name="instalaciones_nombre">
+    </div>
+    <div class="campo">
+        <label for="instalaciones_cedula">Cédula profesional:</label>
+        <input type="text" id="instalaciones_cedula" name="instalaciones_cedula">
+    </div>
+    <div class="campo">
+        <label for="instalaciones_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+        <input type="text" id="instalaciones_colegio" name="instalaciones_colegio">
+    </div>
+    <div class="campo">
+        <label for="instalaciones_registro_colegio">Registro Colegio:</label>
+        <input type="text" id="instalaciones_registro_colegio" name="instalaciones_registro_colegio">
+    </div>
+    <div class="campo">
+        <label for="instalaciones_registro_municipal">Registro municipal:</label>
+        <input type="text" id="instalaciones_registro_municipal" name="instalaciones_registro_municipal">
+    </div>
+
+    <h2 class="datos-corresponsable">Corresponsable de diseño urbano y arq.</h2>
+    <div class="campo">
+        <label for="diseno_nombre">Nombre completo:</label>
+        <input type="text" id="diseno_nombre" name="diseno_nombre">
+    </div>
+    <div class="campo">
+        <label for="diseno_cedula">Cédula profesional:</label>
+        <input type="text" id="diseno_cedula" name="diseno_cedula">
+    </div>
+    <div class="campo">
+        <label for="diseno_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+        <input type="text" id="diseno_colegio" name="diseno_colegio">
+    </div>
+    <div class="campo">
+        <label for="diseno_registro_colegio">Registro Colegio:</label>
+        <input type="text" id="diseno_registro_colegio" name="diseno_registro_colegio">
+    </div>
+    <div class="campo">
+        <label for="diseno_registro_municipal">Registro municipal:</label>
+        <input type="text" id="diseno_registro_municipal" name="diseno_registro_municipal">
+    </div>
+
+    <h2 class="datos-corresponsable">Corresponsable de gas</h2>
+    <div class="campo">
+        <label for="gas_nombre">Nombre completo:</label>
+        <input type="text" id="gas_nombre" name="gas_nombre">
+    </div>
+    <div class="campo">
+        <label for="gas_cedula">Cédula profesional:</label>
+        <input type="text" id="gas_cedula" name="gas_cedula">
+    </div>
+    <div class="campo">
+        <label for="gas_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+        <input type="text" id="gas_colegio" name="gas_colegio">
+    </div>
+    <div class="campo">
+        <label for="gas_registro_colegio">Registro Colegio:</label>
+        <input type="text" id="gas_registro_colegio" name="gas_registro_colegio">
+    </div>
+    <div class="campo">
+        <label for="gas_registro_municipal">Registro municipal:</label>
+        <input type="text" id="gas_registro_municipal" name="gas_registro_municipal">
+    </div>
+
+    <div class="campo">
+        <label for="fecha_inicio">Fecha de inicio:</label>
+        <input type="date" id="fecha_inicio" name="fecha_inicio">
+    </div>
+
+    <div class="campo">
+        <label for="fecha_termino">Fecha de término:</label>
+        <input type="date" id="fecha_termino" name="fecha_termino">
+    </div>
+
+    <div class="campo">
+        <label for="numero_contrato">Número de contrato:</label>
+        <input type="text" id="numero_contrato" name="numero_contrato">
+    </div>
+
+    <button type="button">Guardar Información</button>
+
+    <script>
+        function mostrarDictamen() {
+            const tipoUso = document.getElementById("tipo_uso").value;
+            const dictamenComercial = document.getElementById("dictamen_comercial");
+            const dictamenIndustrial = document.getElementById("dictamen_industrial");
+
+            dictamenComercial.style.display = "none";
+            dictamenIndustrial.style.display = "none";
+
+            if (tipoUso === "Comercial") {
+                dictamenComercial.style.display = "block";
+            } else if (tipoUso === "Industrial") {
+                dictamenIndustrial.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

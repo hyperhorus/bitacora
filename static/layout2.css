@@ -1,0 +1,85 @@
+body {
+    background-color: #333; /* Un gris oscuro como ejemplo */
+    color: #f0f0f0; /* Color de texto claro para contrastar */
+    /* O puedes usar otros colores oscuros como: */
+    /* background-color: #1e1e1e; /* Otro tono oscuro popular */
+    /* background-color: black; */
+    font-family: sans-serif;
+    margin: 100px;
+    margin: 100px;
+    /*margin-left: auto;
+    margin-right: auto;*/
+}
+
+h1 {
+    text-align: center;
+}
+
+.campo {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block; /* La etiqueta ocupa toda la línea */
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 50%; /* Los campos ocupan la mitad del ancho del contenedor */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.sub-campo {
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+.datos-corresponsable .campo {
+    margin-bottom: 10px; /* Reducir el margen para agrupar */
+}
+
+.datos-corresponsable input[type="text"] {
+    width: 70%; /* Ajustar ancho si es necesario */
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+
+.campo .sub-campo {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente línea */
+    gap: 4px; /* Espacio entre los elementos */
+    font-weight: normal;
+}
+
+.campo .sub-campo input[type="checkbox"] {
+    margin-right: 10px; /* Espacio entre el checkbox y la etiqueta */
+}
+
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2px 20px;
+    max-width: 1000px;
+    margin-bottom: 5px;
+    font-weight: 200;
+    font-size: 13px
+
+
+  }
+

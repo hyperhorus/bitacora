@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registros</title>
+</head>
+<body>
+    <h1>Registros de Bitácora</h1>
+    <a href="/">← Volver</a><br><br>
+    {% for r in registros %}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+        <strong>Fecha:</strong> {{ r.fecha }}<br>
+        <strong>Clima:</strong> {{ r.clima }}<br>
+        <strong>Actividades:</strong> {{ r.actividades }}<br>
+        <strong>Avance:</strong> {{ r.avance }}%<br>
+        <strong>Observaciones:</strong> {{ r.observaciones }}
+    </div>
+    {% endfor %}
+</body>
+</html>
