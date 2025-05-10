@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Bitácora</title>
+    <style>
+     /* Estilos CSS (puedes copiar los estilos de tu formulario original) */
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        .accordion {
+            background-color: #222;
+            color: #fff;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1em;
+            transition: 0.4s;
+            margin-bottom: 1px;
+        }
+        .active, .accordion:hover {
+            background-color: #444;
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: #333;
+            color: #eee;
+            display: show;
+            overflow: hidden;
+        }
+
+        .panel.show {
+            display: block;
+        }
+
+        .campo {
+            padding: 10px 0;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .campo input[type="text"],
+        .campo input[type="date"],
+        .campo select {
+            width: calc(50% - 22px); /* Ajuste para el padding */
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #555;
+            background-color: #444;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2px 20px;
+    max-width: 1000px;
+    margin-bottom: 5px;
+    font-weight: 200;
+    font-size: 13px
+  }
+
+        .checkbox-grid label {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        button[type="submit"] {
+            background-color: #555;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #777;
+        }
+
+        h2 {
+            color: #ddd;
+            margin-top: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Editar Bitácora</h1>
+    <form method="POST" action="/actualizar/{{ data.id }}">
+
+        <button type="button" class="accordion">Información de la Obra</button>
+        <div class="panel">
+            <div class="campo">
+                <label for="id_obra">ID Obras:</label>
+                <input type="text" id="id" name="id" size="20" value="{{ data.id }}" readonly>
+                <small>El ID no se puede editar.</small>
+            </div>
+            <div class="campo">
+                <label for="nombre_obra">Nombre de la obra o proyecto:</label>
+                <input type="text" id="nombre_obra" name="nombre_obra" value="{{ data.nombre_obra }}">
+            </div>
+            <div class="campo">
+                <label for="direccion">Dirección del predio:</label>
+                <input type="text" id="direccion" name="direccion" value="{{ data.direccion }}">
+            </div>
+            <label for="tramites">Tipo de tramite o modalidad:</label><br><br>
+            <div class="checkbox-grid">
+                {% for id, texto in tipos_tramite %}
+                    <label><input type="checkbox" name="tramites" value="{{ id }}" {% if id|string in data.tramites %}checked{% endif %}> {{ texto }}</label>
+                {% endfor %}
+            </div>
+            <div class="campo">
+                <label for="tipo_uso">Tipo de uso de predio:</label>
+                <select id="tipo_uso" name="tipo_uso" onchange="mostrarDictamen()">
+                    <option value="">Seleccionar</option>
+                    <option value="Habitacional" {% if data.tipo_uso == 'Habitacional' %}selected{% endif %}>Habitacional</option>
+                    <option value="Comercial" {% if data.tipo_uso == 'Comercial' %}selected{% endif %}>Comercial y/o servicios</option>
+                    <option value="Industrial" {% if data.tipo_uso == 'Industrial' %}selected{% endif %}>Industrial</option>
+                </select>
+            </div>
+            <div class="campo sub-campo" id="dictamen_comercial" style="display: {% if data.tipo_uso == 'Comercial' %}block{% else %}none{% endif %};">
+                <label for="dictamen_comercial_texto">Dictamen de uso de suelo (Comercial y/o servicios):</label>
+                <input type="text" id="dictamen_comercial_texto" name="dictamen_comercial_texto" value="{{ data.dictamen_comercial_texto }}">
+            </div>
+            <div class="campo sub-campo" id="dictamen_industrial" style="display: {% if data.tipo_uso == 'Industrial' %}block{% else %}none{% endif %};">
+                <label for="dictamen_industrial_texto">Dictamen de uso de suelo (Industrial):</label>
+                <input type="text" id="dictamen_industrial_texto" name="dictamen_industrial_texto" value="{{ data.dictamen_industrial_texto }}">
+            </div>
+            <div class="campo">
+                <label for="licencia">Número de licencia o permiso de construcción:</label>
+                <input type="text" id="licencia" name="licencia" value="{{ data.licencia }}">
+            </div>
+            <div class="campo">
+                <label for="clave_catastral">Clave catastral:</label>
+                <input type="text" id="clave_catastral" name="clave_catastral" value="{{ data.clave_catastral }}">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Datos del Propietario</button>
+        <div class="panel">
+            <div class="campo">
+                <label for="propietario_nombre">Nombre o razón social:</label>
+                <input type="text" id="propietario_nombre" name="propietario_nombre" value="{{ data.propietario_nombre }}">
+            </div>
+            <div class="campo">
+                <label for="propietario_direccion">Dirección fiscal:</label>
+                <input type="text" id="propietario_direccion" name="propietario_direccion" value="{{ data.propietario_direccion }}">
+            </div>
+            <div class="campo">
+                <label for="propietario_rfc">RFC:</label>
+                <input type="text" id="propietario_rfc" name="propietario_rfc" value="{{ data.propietario_rfc }}">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Director Responsable de Obra (DRO)</button>
+        <div class="panel">
+            <div class="campo">
+                <label for="dro_nombre">Nombre completo:</label>
+                <input type="text" id="dro_nombre" name="dro_nombre" value="{{ data.dro_nombre }}">
+            </div>
+            <div class="campo">
+                <label for="dro_cedula">Cédula profesional:</label>
+                <input type="text" id="dro_cedula" name="dro_cedula" value="{{ data.dro_cedula }}">
+            </div>
+            <div class="campo">
+                <label for="dro_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="dro_colegio" name="dro_colegio" value="{{ data.dro_colegio }}">
+            </div>
+            <div class="campo">
+                <label for="dro_registro_colegio">Registro Colegio:</label>
+                <input type="text" id="dro_registro_colegio" name="dro_registro_colegio" value="{{ data.dro_registro_colegio }}">
+            </div>
+            <div class="campo">
+                <label for="dro_registro_municipal">Registro municipal:</label>
+                <input type="text" id="dro_registro_municipal" name="dro_registro_municipal" value="{{ data.dro_registro_municipal }}">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Corresponsable de estructuras</button>
+        <div class="panel">
+            <div class="campo">
+                <label for="estructura_nombre">Nombre completo:</label>
+                <input type="text" id="estructura_nombre" name="estructura_nombre" value="{{ data.estructura_nombre }}">
+            </div>
+            <div class="campo">
+                <label for="estructura_cedula">Cédula profesional:</label>
+                <input type="text" id="estructura_cedula" name="estructura_cedula" value="{{ data.estructura_cedula }}">
+            </div>
+            <div class="campo">
+                <label for="estructura_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="estructura_colegio" name="estructura_colegio" value="{{ data.estructura_colegio }}">
+            </div>
+            <div class="campo">
+                <label for="estructura_registro_colegio">Registro Colegio:</label>
+                <input type="text" id="estructura_registro_colegio" name="estructura_registro_colegio" value="{{ data.estructura_registro_colegio }}">
+            </div>
+            <div class="campo">
+                <label for="estructura_registro_municipal">Registro municipal:</label>
+                <input type="text" id="estructura_registro_municipal" name="estructura_registro_municipal" value="{{ data.estructura_registro_municipal }}">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Corresponsable de instalaciones</button>
+        <div class="panel">
+            <div class="campo">
+                <label for="instalaciones_nombre">Nombre completo:</label>
+                <input type="text" id="instalaciones_nombre" name="instalaciones_nombre" value="{{ data.instalaciones_nombre }}">
+            </div>
+            <div class="campo">
+                <label for="instalaciones_cedula">Cédula profesional:</label>
+                <input type="text" id="instalaciones_cedula" name="instalaciones_cedula" value="{{ data.instalaciones_cedula }}">
+            </div>
+            <div class="campo">
+                <label for="instalaciones_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="instalaciones_colegio" name="instalaciones_colegio" value="{{ data.instalaciones_colegio }}">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Corresponsable de diseño urbano y arq.</button>
+        <div class="panel">
+
+            <div class="campo">
+                <label for="diseno_nombre">Nombre completo:</label>
+                <input type="text" id="diseno_nombre" name="diseno_nombre" value="{{ data.diseño_nombre }}">
+            </div>
+            <div class="campo">
+                <label for="diseno_cedula">Cédula profesional:</label>
+                <input type="text" id="diseno_cedula" name="diseno_cedula" value="{{ data.diseno_cedula }}">
+            </div>
+            <div class="campo">
+                <label for="diseno_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="diseno_colegio" name="diseno_colegio" value="{{ data.diseno_colegio }}">
+            </div>
+            <div class="campo">
+                <label for="diseno_registro_colegio">Registro Colegio:</label>
+                <input type="text" id="diseno_registro_colegio" name="diseno_registro_colegio" value="{{ data.diseno_registro_colegio }}">
+            </div>
+            <div class="campo">
+                <label for="diseno_registro_municipal">Registro municipal:</label>
+                <input type="text" id="diseno_registro_municipal" name="diseno_registro_municipal" value="{{ data.diseno_registro_municipal }}">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Corresponsable de gas</button>
+        <div class="panel">
+
+            <div class="campo">
+                <label for="gas_nombre">Nombre completo:</label>
+                <input type="text" id="gas_nombre" name="gas_nombre" value="{{ data.gas_nombre }}">
+            </div>
+            <div class="campo">
+                <label for="gas_cedula">Cédula profesional:</label>
+                <input type="text" id="gas_cedula" name="gas_cedula" value="{{ data.gas_cedula }}">
+            </div>
+            <div class="campo">
+                <label for="gas_colegio">Colegio (CIROCEQ, CAEQ, otro):</label>
+                <input type="text" id="gas_colegio" name="gas_colegio" value="{{ data.gas_colegio }}">
+            </div>
+            <div class="campo">
+                <label for="gas_registro_colegio">Registro Colegio:</label>
+                <input type="text" id="gas_registro_colegio" name="gas_registro_colegio" value="{{ data.gas_registro_colegio }}">
+            </div>
+            <div class="campo">
+                <label for="gas_registro_municipal">Registro municipal:</label>
+                <input type="text" id="gas_registro_municipal" name="gas_registro_municipal" value="{{ data.gas_registro_municipal }}">
+            </div>
+        </div>
+
+        <button type="button" class="accordion">Fechas y Contrato</button>
+        <div class="panel">
+            <div class="campo">
+                <label for="fecha_inicio">Fecha de inicio:</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio" value="{{ data.fecha_inicio }}">
+            </div>
+            <div class="campo">
+                <label for="fecha_termino">Fecha de término:</label>
+                <input type="date" id="fecha_termino" name="fecha_termino" value="{{ data.fecha_termino }}">
+            </div>
+            <div class="campo">
+                <label for="numero_contrato">Número de contrato:</label>
+                <input type="text" id="numero_contrato" name="numero_contrato" value="{{ data.numero_contrato }}">
+            </div>
+        </div>
+
+     <button type="submit">Guardar</button>
+    </form>

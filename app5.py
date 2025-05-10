@@ -125,11 +125,143 @@ def guardar():
         print("Datos recibidos:")
         for clave, valor in datos.items():
             registro_json[clave] = request.form[clave]
-        print(f" jason {jsonify(registro_json)}")
+        #print(f" jason {jsonify(registro_json)}")
         return "Datos guardados correctamente"#, jsonify(registro_json)
     except Exception as e:
         return f"Error al guardar: {str(e)}"
 
+@app.route('/buscar_bitacora')
+def buscar_bitacora():
+    return render_template('buscar_bitacora.html')
+
+
+@app.route('/editar/<id>', methods=['GET'])
+def editar_registro(id):
+    try:
+        cursor = conexion.connection.cursor()
+        sql = "SELECT * FROM registro_obras WHERE id = %s"
+        #print(f"id {id}")
+        cursor.execute(sql, (id,))
+        registro = cursor.fetchone()
+        #cursor.close()
+
+        if registro:
+            #print(f"veamos el registro 2 {registro}")
+            #print(f"cursor.description {cursor.description}")
+            # Convertir la tupla del registro a un diccionario para facilitar el acceso en el template
+            column_names = [column[0] for column in cursor.description]
+            #print(f"column_names {column_names}")
+            data = dict(zip(column_names, registro))
+            cursor.close()
+            # Separar los trámites (que están guardados como una cadena separada por comas)
+            if data.get('tramites'):
+                data['tramites'] = data['tramites'].split(',')
+
+            return render_template('formulario_editar_bitacora.html', data=data, tipos_tramite=TIPOS_TRAMITE)
+        else:
+            return "Registro no encontrado."
+
+    except Exception as e:
+        return f"Error al cargar el registro para editar: {str(e)}"
+
+@app.route('/actualizar/<id>', methods=['POST'])
+#@app.route('/actualizar', methods=['POST'])
+def actualizar_registro(id):
+    datos = request.form.to_dict(flat=False)
+    try:
+        cursor = conexion.connection.cursor()
+        sql = """
+            UPDATE registro_obras SET
+                nombre_obra = %s,
+                direccion = %s,
+                tramites = %s,
+                tipo_uso = %s,
+                dictamen_comercial_texto = %s,
+                dictamen_industrial_texto = %s,
+                licencia = %s,
+                clave_catastral = %s,
+                propietario_nombre = %s,
+                propietario_direccion = %s,
+                propietario_rfc = %s,
+                dro_nombre = %s,
+                dro_cedula = %s,
+                dro_colegio = %s,
+                dro_registro_colegio = %s,
+                dro_registro_municipal = %s,
+                estructura_nombre = %s,
+                estructura_cedula = %s,
+                estructura_colegio = %s,
+                estructura_registro_colegio = %s,
+                estructura_registro_municipal = %s,
+                instalaciones_nombre = %s,
+                instalaciones_cedula = %s,
+                instalaciones_colegio = %s,
+                instalaciones_registro_colegio = %s,
+                instalaciones_registro_municipal = %s,
+                diseno_nombre = %s,
+                diseno_cedula = %s,
+                diseno_colegio = %s,
+                diseno_registro_colegio = %s,
+                diseno_registro_municipal = %s,
+                gas_nombre = %s,
+                gas_cedula = %s,
+                gas_colegio = %s,
+                gas_registro_colegio = %s,
+                gas_registro_municipal = %s,
+                fecha_inicio = %s,
+                fecha_termino = %s,
+                numero_contrato = %s
+            WHERE id = %s
+        """
+        valores = (
+            datos.get("nombre_obra", [""])[0],
+            datos.get("direccion", [""])[0],
+            ",".join(request.form.getlist("tramites")),
+            datos.get("tipo_uso", [""])[0],
+            datos.get("dictamen_comercial_texto", [""])[0],
+            datos.get("dictamen_industrial_texto", [""])[0],
+            datos.get("licencia", [""])[0],
+            datos.get("clave_catastral", [""])[0],
+            datos.get("propietario_nombre", [""])[0],
+            datos.get("propietario_direccion", [""])[0],
+            datos.get("propietario_rfc", [""])[0],
+            datos.get("dro_nombre", [""])[0],
+            datos.get("dro_cedula", [""])[0],
+            datos.get("dro_colegio", [""])[0],
+            datos.get("dro_registro_colegio", [""])[0],
+            datos.get("dro_registro_municipal", [""])[0],
+            datos.get("estructura_nombre", [""])[0],
+            datos.get("estructura_cedula", [""])[0],
+            datos.get("estructura_colegio", [""])[0],
+            datos.get("estructura_registro_colegio", [""])[0],
+            datos.get("estructura_registro_municipal", [""])[0],
+            datos.get("instalaciones_nombre", [""])[0],
+            datos.get("instalaciones_cedula", [""])[0],
+            datos.get("instalaciones_colegio", [""])[0],
+            datos.get("instalaciones_registro_colegio", [""])[0],
+            datos.get("instalaciones_registro_municipal", [""])[0],
+            datos.get("diseno_nombre", [""])[0],
+            datos.get("diseno_cedula", [""])[0],
+            datos.get("diseno_colegio", [""])[0],
+            datos.get("diseno_registro_colegio", [""])[0],
+            datos.get("diseno_registro_municipal", [""])[0],
+            datos.get("gas_nombre", [""])[0],
+            datos.get("gas_cedula", [""])[0],
+            datos.get("gas_colegio", [""])[0],
+            datos.get("gas_registro_colegio", [""])[0],
+            datos.get("gas_registro_municipal", [""])[0],
+            datos.get("fecha_inicio", [""])[0],
+            datos.get("fecha_termino", [""])[0],
+            datos.get("numero_contrato", [""])[0],
+            id  # El ID para la cláusula WHERE
+        )
+        print(f"valores {valores}")
+        cursor.execute(sql, valores)
+        conexion.connection.commit()
+        cursor.close()
+        return redirect(url_for('formulario')) # Redirigir a la página principal o a una lista de registros
+    except Exception as e:
+        return f"Error al actualizar el registro: {str(e)}"
 
 # @app.route('/guardar', methods=['POST'])
 # def guardar():

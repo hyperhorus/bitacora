@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Bitácora para Editar</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #222;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #555;
+            background-color: #444;
+            color: #fff;
+            border-radius: 4px;
+            width: 200px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        button[type="submit"] {
+            background-color: #555;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #777;
+        }
+
+        h1 {
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Buscar Bitácora para Editar</h1>
+        <form method="GET" action="/editar">
+            <label for="id_obra">ID de Obra:</label>
+            <input type="text" id="id_obra" name="id_obra" required>
+            <button type="submit">Buscar y Editar</button>
+        </form>
+    </div>
+</body>
+</html>
