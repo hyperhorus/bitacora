@@ -136,7 +136,8 @@ def buscar_bitacora():
 
 
 @app.route('/editar/<id>', methods=['GET'])
-def editar_registro(id):
+def editar_registro():
+    print(f"valor del id {id}")
     try:
         cursor = conexion.connection.cursor()
         sql = "SELECT * FROM registro_obras WHERE id = %s"
