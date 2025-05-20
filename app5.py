@@ -50,7 +50,7 @@ def formulario():
     data = {
         'tipos_tramite': TIPOS_TRAMITE
     }
-    return render_template('formulario_bitacora_accordion.html', data=data)
+    return render_template('formulario_bitacora_accordion2.html', data=data)
     #formulario_bitacora_accordion
 
 
@@ -74,7 +74,7 @@ def guardar():
                 fecha_inicio, fecha_termino, numero_contrato
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
-
+        print("dictamen_industrial_texto " + datos.get("dictamen_industrial_texto", [''])[0])
         valores = (
             datos.get("nombre_obra", [""])[0],
             datos.get("direccion", [""])[0],
@@ -122,7 +122,7 @@ def guardar():
 
         #datos = request.form.to_dict(flat=False)
         registro_json = {}
-        print("Datos recibidos:")
+        #print(f"Valores nuevos: {valores}")
         for clave, valor in datos.items():
             registro_json[clave] = request.form[clave]
         #print(f" jason {jsonify(registro_json)}")
@@ -135,33 +135,29 @@ def buscar_bitacora():
     return render_template('buscar_bitacora.html')
 
 
-@app.route('/editar/<id>', methods=['GET'])
+@app.route('/editar', methods=['GET'])
 def editar_registro():
-    print(f"valor del id {id}")
+    id = request.args.get('id')
+    if not id:
+        return "ID de obra no proporcionado."
     try:
         cursor = conexion.connection.cursor()
         sql = "SELECT * FROM registro_obras WHERE id = %s"
-        #print(f"id {id}")
         cursor.execute(sql, (id,))
         registro = cursor.fetchone()
-        #cursor.close()
 
         if registro:
-            #print(f"veamos el registro 2 {registro}")
-            #print(f"cursor.description {cursor.description}")
             # Convertir la tupla del registro a un diccionario para facilitar el acceso en el template
+
             column_names = [column[0] for column in cursor.description]
-            #print(f"column_names {column_names}")
             data = dict(zip(column_names, registro))
-            cursor.close()
             # Separar los trámites (que están guardados como una cadena separada por comas)
             if data.get('tramites'):
                 data['tramites'] = data['tramites'].split(',')
-
+            cursor.close()
             return render_template('formulario_editar_bitacora.html', data=data, tipos_tramite=TIPOS_TRAMITE)
         else:
             return "Registro no encontrado."
-
     except Exception as e:
         return f"Error al cargar el registro para editar: {str(e)}"
 
@@ -256,7 +252,7 @@ def actualizar_registro(id):
             datos.get("numero_contrato", [""])[0],
             id  # El ID para la cláusula WHERE
         )
-        print(f"valores {valores}")
+       # print(f"valores {valores}")
         cursor.execute(sql, valores)
         conexion.connection.commit()
         cursor.close()
